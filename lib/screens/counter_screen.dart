@@ -10,6 +10,21 @@ class CounterScreen extends StatefulWidget {
 class _CounterScreenState extends State<CounterScreen> {
   int counter = 0;
 
+  void increase() {
+    counter++;
+    setState(() {});
+  }
+
+  void decrease() {
+    counter--;
+    setState(() {});
+  }
+
+  void reset() {
+    counter = 0;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     const fontSize30 = TextStyle(fontSize: 30);
@@ -30,38 +45,51 @@ class _CounterScreenState extends State<CounterScreen> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          FloatingActionButton(
-            child: const Icon(
-              Icons.arrow_drop_up,
-            ),
-            onPressed: () {
-              counter++;
-              setState(() {});
-            },
-          ),
-          FloatingActionButton(
-            child: const Icon(
-              Icons.clear,
-            ),
-            onPressed: () {
-              counter = 0;
-              setState(() {});
-            },
-          ),
-          FloatingActionButton(
-            child: const Icon(
-              Icons.arrow_drop_down,
-            ),
-            onPressed: () {
-              counter--;
-              setState(() {});
-            },
-          ),
-        ],
+      floatingActionButton: CustomFloatingActions(
+        increaseFunction: increase,
+        decreaseFunction: decrease,
+        resetFunction: reset,
       ),
+    );
+  }
+}
+
+class CustomFloatingActions extends StatelessWidget {
+  final Function increaseFunction;
+  final Function decreaseFunction;
+  final Function resetFunction;
+
+  const CustomFloatingActions({
+    Key? key,
+    required this.increaseFunction,
+    required this.decreaseFunction,
+    required this.resetFunction,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        FloatingActionButton(
+          child: const Icon(
+            Icons.arrow_drop_up,
+          ),
+          onPressed: () => increaseFunction(),
+        ),
+        FloatingActionButton(
+          child: const Icon(
+            Icons.clear,
+          ),
+          onPressed: () => resetFunction(),
+        ),
+        FloatingActionButton(
+          child: const Icon(
+            Icons.arrow_drop_down,
+          ),
+          onPressed: () => decreaseFunction(),
+        ),
+      ],
     );
   }
 }
